@@ -76,6 +76,10 @@ module Jackal
         endpoint = generate_endpoint
         results = []
         args[:probes].each do |probe|
+          probe_data = rekey_hash(probe)
+          probe_data.delete_if do |key, value|
+            value.to_s.empty?
+          end
           probe_data = MultiJson.dump(rekey_hash(probe))
           debug "Attempting probe creation (#{probe_data.inspect})"
           results.push(
